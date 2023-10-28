@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "publications".
@@ -15,7 +16,7 @@ use Yii;
  *
  * @property User $author
  */
-class BasePublications extends \yii\db\ActiveRecord
+class BasePublications extends ActiveRecord
 {
     /**
      * {@inheritdoc}

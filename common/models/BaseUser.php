@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "user".
@@ -22,7 +23,7 @@ use Yii;
  * @property AccessTokens[] $accessTokens
  * @property Publications[] $publications
  */
-class BaseUser extends \yii\db\ActiveRecord
+class BaseUser extends ActiveRecord
 {
     /**
      * {@inheritdoc}
