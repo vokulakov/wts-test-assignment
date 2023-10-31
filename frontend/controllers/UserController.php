@@ -10,6 +10,8 @@ use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 
 use common\models\User;
+use common\models\AccessTokens;
+use frontend\models\SignupForm;
 
 class UserController extends Controller
 {
@@ -66,7 +68,31 @@ class UserController extends Controller
             return false;
         }
 
-        return json_encode([]);
+        $model = new SignupForm();
+        $params = $request->post();
+
+        if ($model->load($params, "") && $model->signup())
+        {
+            return json_encode(
+                [
+                    'status' => 'success',
+                    'data' => [
+                        'username' => $model->username,
+                        'email' => $model->email,
+                        'accessToken' => $model->accessToken
+                    ],
+                    'errors' => []
+                ]
+            );
+        }
+
+        return json_encode(
+            [
+                'status' => 'error',
+                'data' => null,
+                'errors' => $model->errors
+            ]
+        );
     }
 
     /*
@@ -81,7 +107,11 @@ class UserController extends Controller
             return false;
         }
 
-        return json_encode([]);
+        return json_encode(
+            [
+                'data' => $request->post()
+            ]
+        );
     }
 
 }
