@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Exception;
+use yii\db\ActiveRecord;
 
 class AccessTokens extends BaseAccessTokens
 {
@@ -19,6 +20,22 @@ class AccessTokens extends BaseAccessTokens
         $token->save();
 
         return $token->accessToken;
+    }
+
+    /**
+     * Finds user by access token
+     *
+     * @param string $token
+     * @return \common\models\User
+     */
+    public static function getUserFromToken($token)
+    {
+        $_object = static::findOne(['accessToken' => $token]);
+        if (empty($_object)) {
+            return null;
+        }
+
+        return User::findOne(['id' => $_object->userID]);
     }
 
 }
