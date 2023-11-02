@@ -3,15 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\Response;
 
-use common\models\User;
-use common\models\AccessTokens;
 use frontend\models\SignupForm;
+use frontend\models\LoginByEmail;
 
 class UserController extends Controller
 {
@@ -81,7 +80,7 @@ class UserController extends Controller
                         'email' => $model->email,
                         'accessToken' => $model->accessToken
                     ],
-                    'errors' => []
+                    'errors' => $model->errors
                 ]
             );
         }
@@ -107,9 +106,28 @@ class UserController extends Controller
             return false;
         }
 
+        $model = new LoginByEmail();
+        $params = $request->post();
+
+        if ($model->load($params, "") && $model->login())
+        {
+            return json_encode(
+                [
+                    'status' => 'success',
+                    'data' => [
+                        'email' => $model->email,
+                        'accessToken' => $model->accessToken
+                    ],
+                    'errors' => $model->errors
+                ]
+            );
+        }
+
         return json_encode(
             [
-                'data' => $request->post()
+                'status' => 'error',
+                'data' => null,
+                'errors' => $model->errors
             ]
         );
     }
