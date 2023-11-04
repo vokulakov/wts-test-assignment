@@ -96,7 +96,7 @@ class PublicationController extends Controller
     /*
      * Получить все публикации
      */
-    public function actionAllList()
+    public function actionAll()
     {
         $request = Yii::$app->request;
         if (!$request->isGet)
@@ -131,7 +131,6 @@ class PublicationController extends Controller
             ],
             JSON_PRETTY_PRINT
         );
-
 
     }
 
