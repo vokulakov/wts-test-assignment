@@ -81,7 +81,8 @@ class UserController extends Controller
                         'accessToken' => $model->accessToken
                     ],
                     'errors' => $model->errors
-                ]
+                ],
+                JSON_PRETTY_PRINT
             );
         }
 
@@ -90,7 +91,8 @@ class UserController extends Controller
                 'status' => 'error',
                 'data' => null,
                 'errors' => $model->errors
-            ]
+            ],
+            JSON_PRETTY_PRINT
         );
     }
 
@@ -119,7 +121,8 @@ class UserController extends Controller
                         'accessToken' => $model->accessToken
                     ],
                     'errors' => $model->errors
-                ]
+                ],
+                JSON_PRETTY_PRINT
             );
         }
 
@@ -128,7 +131,8 @@ class UserController extends Controller
                 'status' => 'error',
                 'data' => null,
                 'errors' => $model->errors
-            ]
+            ],
+            JSON_PRETTY_PRINT
         );
     }
 
