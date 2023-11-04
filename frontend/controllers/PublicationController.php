@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\Response;
 
 use frontend\models\PublicationAdd;
-use frontend\models\PublicationAllList;
+use frontend\models\PublicationList;
 
 use common\models\BasePublications;
 
@@ -104,12 +104,12 @@ class PublicationController extends Controller
             return false;
         }
 
-        $model = new PublicationAllList();
+        $model = new PublicationList();
         $params = $request->get();
         $params['limit'] = $params['limit'] ?? 15;
         $params['offset'] = $params['offset'] ?? 0;
 
-        if ($model->load($params, "") && $model->AllList())
+        if ($model->load($params, "") && $model->getAllPublication())
         {
             return JSON::encode(
                 [

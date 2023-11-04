@@ -7,10 +7,11 @@ use yii\base\Model;
 
 use common\models\BasePublications;
 
-class PublicationAllList extends Model
+class PublicationList extends Model
 {
     public $limit;
     public $offset;
+    public $accessToken;
 
     public $publications;
 
@@ -22,7 +23,10 @@ class PublicationAllList extends Model
         ];
     }
 
-    public function AllList()
+    /*
+     * Получить все публикации
+     */
+    public function getAllPublication(): bool
     {
         if (!$this->validate())
         {
@@ -36,4 +40,5 @@ class PublicationAllList extends Model
 
         return true;
     }
+
 }
