@@ -22,7 +22,14 @@ class LoginByEmail extends Model
     public function rules()
     {
         return [
-            [['email', 'password'], 'required'],
+            ['email', 'trim'],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'string', 'max' => 255],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+
+            ['password', 'required'],
+            ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
             ['password', 'validatePassword'],
         ];
     }
