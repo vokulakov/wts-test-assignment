@@ -2,13 +2,18 @@
 
 namespace frontend\controllers;
 
-use frontend\models\PublicationAdd;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
+
+use frontend\models\PublicationAdd;
+use frontend\models\PublicationAllList;
+
+use common\models\BasePublications;
 
 class PublicationController extends Controller
 {
@@ -18,7 +23,7 @@ class PublicationController extends Controller
         return [
             [
                 'class' => ContentNegotiator::class,
-                'only' => ['add'],
+                'only' => ['add', 'all'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ],
@@ -28,10 +33,10 @@ class PublicationController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => [],
+                'only' => ['add', 'all'],
                 'rules' => [
                     [
-                        'actions' => [],
+                        'actions' => ['add', 'all'],
                         'allow' => true,
                         'roles' => ['?'],
                     ]
@@ -41,13 +46,16 @@ class PublicationController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'add' => ['post'],
-                    '' => ['get'],
+                    'all' => ['get'],
                     '' => ['get']
                 ],
             ]
         ];
     }
 
+    /*
+     * Опубликовать пост
+     */
     public function actionAdd()
     {
         $request = Yii::$app->request;
@@ -69,7 +77,8 @@ class PublicationController extends Controller
                         'accessToken' => $model->accessToken
                     ],
                     'errors' => $model->errors
-                ]
+                ],
+                JSON_PRETTY_PRINT
             );
         }
 
@@ -78,8 +87,51 @@ class PublicationController extends Controller
                 'status' => 'error',
                 'data' => null,
                 'errors' => $model->errors
-            ]
+            ],
+            JSON_PRETTY_PRINT
         );
+
+    }
+
+    /*
+     * Получить все публикации
+     */
+    public function actionAllList()
+    {
+        $request = Yii::$app->request;
+        if (!$request->isGet)
+        {
+            return false;
+        }
+
+        $model = new PublicationAllList();
+        $params = $request->get();
+        $params['limit'] = $params['limit'] ?? 15;
+        $params['offset'] = $params['offset'] ?? 0;
+
+        if ($model->load($params, "") && $model->AllList())
+        {
+            return JSON::encode(
+                [
+                    'status' => 'success',
+                    'data' => [
+                        'publications' => $model->publications
+                    ],
+                    'errors' => $model->errors
+                ],
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(
+            [
+                'status' => 'error',
+                'data' => null,
+                'errors' => $model->errors
+            ],
+            JSON_PRETTY_PRINT
+        );
+
 
     }
 
