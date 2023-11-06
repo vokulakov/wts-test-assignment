@@ -62,6 +62,8 @@ class User extends BaseUser implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['role', 'default', 'value' => self::ROLE_DEFAULT_USER],
+            ['role', 'in', 'range' => [self::ROLE_DEFAULT_USER, self::ROLE_ADMIN_USER]],
         ];
     }
 
