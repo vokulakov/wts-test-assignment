@@ -31,6 +31,12 @@ class User extends BaseUser implements IdentityInterface
 
 
     /**
+     * User roles
+     */
+    const ROLE_DEFAULT_USER = 10;
+    const ROLE_ADMIN_USER = 7;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -56,6 +62,8 @@ class User extends BaseUser implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['role', 'default', 'value' => self::ROLE_DEFAULT_USER],
+            ['role', 'in', 'range' => [self::ROLE_DEFAULT_USER, self::ROLE_ADMIN_USER]],
         ];
     }
 
@@ -143,6 +151,20 @@ class User extends BaseUser implements IdentityInterface
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
+    }
+
+    /**
+     * Check user for admin
+     *
+     * @param string $id user verify
+     * @return bool
+     */
+    public static function isAdminUser($id)
+    {
+        return (bool)static::findOne([
+            'id' => $id,
+            'role' => self::ROLE_ADMIN_USER
+        ]);
     }
 
     /**

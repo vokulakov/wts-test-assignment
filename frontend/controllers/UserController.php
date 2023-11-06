@@ -2,15 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\models\LoginByEmail;
+use frontend\models\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-
-use frontend\models\SignupForm;
-use frontend\models\LoginByEmail;
 
 class UserController extends Controller
 {

@@ -2,10 +2,11 @@
 
 namespace backend\controllers;
 
-use common\models\LoginForm;
+use common\models\LoginByEmail;
+use common\models\User;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -28,9 +29,24 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    /*
+                     * Проверка роли пользователя - в админку может войти только админ
+                     * https://www.yiiframework.com/doc/guide/2.0/ru/security-authorization
+                     */
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function($rule, $action) {
+                            return User::isAdminUser(Yii::$app
+                                ->user
+                                ->identity
+                                ->getId());
+                        }
                     ],
                 ],
             ],
@@ -78,9 +94,9 @@ class SiteController extends Controller
 
         $this->layout = 'blank';
 
-        $model = new LoginForm();
+        $model = new LoginByEmail();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+           return $this->goHome();
         }
 
         $model->password = '';
