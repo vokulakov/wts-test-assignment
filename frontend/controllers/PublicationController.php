@@ -19,9 +19,6 @@ class PublicationController extends Controller
 {
     public $enableCsrfValidation = false;
 
-    const LIMIT_DEFAULT = 15; //сколько записей вернуть
-    const OFFSET_DEFAULT = 0; //сколько записей ранее уже было загружено
-
     public function behaviors()
     {
         return [
@@ -99,8 +96,8 @@ class PublicationController extends Controller
 
         $model = new PublicationList();
         $params = $request->get();
-        $params['limit'] = $params['limit'] ?? self::LIMIT_DEFAULT;
-        $params['offset'] = $params['offset'] ?? self::OFFSET_DEFAULT;
+        $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
+        $params['offset'] = $params['offset'] ?? Yii::$app->params['offsetDefault'];
 
         if ($model->load($params, "") && $model->getAllPublication())
         {
@@ -140,8 +137,8 @@ class PublicationController extends Controller
 
         $model = new PublicationList();
         $params = $request->get();
-        $params['limit'] = $params['limit'] ?? self::LIMIT_DEFAULT;
-        $params['offset'] = $params['offset'] ?? self::OFFSET_DEFAULT;
+        $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
+        $params['offset'] = $params['offset'] ?? Yii::$app->params['offsetDefault'];
 
         if ($model->load($params, "") && $model->getUserPublications())
         {
