@@ -60,27 +60,20 @@ class PublicationController extends Controller
 
         if ($model->load($params, "") && $model->add())
         {
-            return json_encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'accessToken' => $model->accessToken
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'accessToken' => $model->accessToken
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
-
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
     }
 
     /*
@@ -101,27 +94,20 @@ class PublicationController extends Controller
 
         if ($model->load($params, "") && $model->getAllPublication())
         {
-            return JSON::encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'publications' => $model->publications
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'publications' => $model->publications
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
-
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
     }
 
     /*
@@ -142,27 +128,21 @@ class PublicationController extends Controller
 
         if ($model->load($params, "") && $model->getUserPublications())
         {
-            return JSON::encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'accessToken' => $model->accessToken,
-                        'publications' => $model->publications
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'accessToken' => $model->accessToken,
+                    'publications' => $model->publications
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
 
     }
 
