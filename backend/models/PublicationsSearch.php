@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\BasePublications;
+use common\models\Publications;
 
 /**
  * PublicationsSearch represents the model behind the search form of `common\models\BasePublications`.
  */
-class PublicationsSearch extends BasePublications
+class PublicationsSearch extends Publications
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class PublicationsSearch extends BasePublications
      */
     public function search($params)
     {
-        $query = BasePublications::find();
+        $query = Publications::find();
 
         // add conditions that should always apply here
 

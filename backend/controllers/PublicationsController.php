@@ -2,7 +2,7 @@
 
 namespace backend\controllers;
 
-use common\models\BasePublications;
+use common\models\Publications;
 use backend\models\PublicationsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -67,7 +67,7 @@ class PublicationsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new BasePublications();
+        $model = new Publications();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -120,12 +120,12 @@ class PublicationsController extends Controller
      * Finds the BasePublications model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $postID Post ID
-     * @return BasePublications the loaded model
+     * @return Publications the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($postID)
     {
-        if (($model = BasePublications::findOne(['postID' => $postID])) !== null) {
+        if (($model = Publications::findOne(['postID' => $postID])) !== null) {
             return $model;
         }
 

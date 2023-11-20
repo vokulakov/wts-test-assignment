@@ -5,7 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 
-use common\models\BasePublications;
+use common\models\Publications;
 use common\models\AccessTokens;
 
 class PublicationAdd extends Model
@@ -39,7 +39,7 @@ class PublicationAdd extends Model
             return false;
         }
 
-        $publication = new BasePublications();
+        $publication = new Publications();
         $publication->tittle = $this->tittle;
         $publication->text = $this->text;
         $publication->authorID = $user->getId();
