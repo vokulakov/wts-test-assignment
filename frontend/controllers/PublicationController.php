@@ -19,9 +19,6 @@ class PublicationController extends Controller
 {
     public $enableCsrfValidation = false;
 
-    const LIMIT_DEFAULT = 15; //сколько записей вернуть
-    const OFFSET_DEFAULT = 0; //сколько записей ранее уже было загружено
-
     public function behaviors()
     {
         return [
@@ -34,17 +31,6 @@ class PublicationController extends Controller
                 'languages' => [
                     'en'
                 ]
-            ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['add', 'all', 'my'],
-                'rules' => [
-                    [
-                        'actions' => ['add', 'all', 'my'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ]
-                ],
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -74,27 +60,20 @@ class PublicationController extends Controller
 
         if ($model->load($params, "") && $model->add())
         {
-            return json_encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'accessToken' => $model->accessToken
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'accessToken' => $model->accessToken
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
-
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
     }
 
     /*
@@ -110,32 +89,25 @@ class PublicationController extends Controller
 
         $model = new PublicationList();
         $params = $request->get();
-        $params['limit'] = $params['limit'] ?? self::LIMIT_DEFAULT;
-        $params['offset'] = $params['offset'] ?? self::OFFSET_DEFAULT;
+        $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
+        $params['offset'] = $params['offset'] ?? Yii::$app->params['offsetDefault'];
 
         if ($model->load($params, "") && $model->getAllPublication())
         {
-            return JSON::encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'publications' => $model->publications
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'publications' => $model->publications
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
-
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
     }
 
     /*
@@ -151,32 +123,26 @@ class PublicationController extends Controller
 
         $model = new PublicationList();
         $params = $request->get();
-        $params['limit'] = $params['limit'] ?? self::LIMIT_DEFAULT;
-        $params['offset'] = $params['offset'] ?? self::OFFSET_DEFAULT;
+        $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
+        $params['offset'] = $params['offset'] ?? Yii::$app->params['offsetDefault'];
 
         if ($model->load($params, "") && $model->getUserPublications())
         {
-            return JSON::encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'accessToken' => $model->accessToken,
-                        'publications' => $model->publications
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'accessToken' => $model->accessToken,
+                    'publications' => $model->publications
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
 
     }
 

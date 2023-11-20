@@ -33,17 +33,6 @@ class UserController extends Controller
                     'en'
                 ]
             ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['signup', 'login'],
-                'rules' => [
-                    [
-                        'actions' => ['signup', 'login'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ]
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -71,28 +60,22 @@ class UserController extends Controller
 
         if ($model->load($params, "") && $model->signup())
         {
-            return json_encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'username' => $model->username,
-                        'email' => $model->email,
-                        'accessToken' => $model->accessToken
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'username' => $model->username,
+                    'email' => $model->email,
+                    'accessToken' => $model->accessToken
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
     }
 
     /*
@@ -112,27 +95,21 @@ class UserController extends Controller
 
         if ($model->load($params, "") && $model->login())
         {
-            return json_encode(
-                [
-                    'status' => 'success',
-                    'data' => [
-                        'email' => $model->email,
-                        'accessToken' => $model->accessToken
-                    ],
-                    'errors' => $model->errors
+            return [
+                'status' => 'success',
+                'data' => [
+                    'email' => $model->email,
+                    'accessToken' => $model->accessToken
                 ],
-                JSON_PRETTY_PRINT
-            );
+                'errors' => $model->errors
+            ];
         }
 
-        return json_encode(
-            [
-                'status' => 'error',
-                'data' => null,
-                'errors' => $model->errors
-            ],
-            JSON_PRETTY_PRINT
-        );
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
     }
 
 }

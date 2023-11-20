@@ -5,7 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 
-use common\models\BasePublications;
+use common\models\Publications;
 use common\models\AccessTokens;
 
 class PublicationList extends Model
@@ -35,10 +35,11 @@ class PublicationList extends Model
             return false;
         }
 
-        $this->publications = BasePublications::find()
+        $queryResult = Publications::find()
             ->limit($this->limit)
-            ->offset($this->offset)
-            ->all();
+            ->offset($this->offset);
+
+        $this->publications = Publications::serializeToArrayFull($queryResult);
 
         return true;
     }
@@ -60,11 +61,12 @@ class PublicationList extends Model
             return false;
         }
 
-        $this->publications = BasePublications::find()
+        $queryResult = Publications::find()
             ->where(['authorID' => $user->id])
             ->limit($this->limit)
-            ->offset($this->offset)
-            ->all();
+            ->offset($this->offset);
+
+        $this->publications = Publications::serializeToArrayShort($queryResult);
 
         return true;
     }
