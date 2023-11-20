@@ -23,12 +23,18 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseUser implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+
+    /**
+     * User roles
+     */
+    const ROLE_DEFAULT_USER = 10;
+    const ROLE_ADMIN_USER = 7;
 
     /**
      * {@inheritdoc}
@@ -56,6 +62,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['role', 'default', 'value' => self::ROLE_DEFAULT_USER],
+            ['role', 'in', 'range' => [self::ROLE_DEFAULT_USER, self::ROLE_ADMIN_USER]],
         ];
     }
 
@@ -84,6 +92,17 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Finds user by email
+     *
+     * @param string $email
+     * @return static|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email, 'status' => self::STATUS_INACTIVE]);
     }
 
     /**
@@ -132,6 +151,20 @@ class User extends ActiveRecord implements IdentityInterface
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
+    }
+
+    /**
+     * Check user for admin
+     *
+     * @param string $id user verify
+     * @return bool
+     */
+    public static function isAdminUser($id)
+    {
+        return (bool)static::findOne([
+            'id' => $id,
+            'role' => self::ROLE_ADMIN_USER
+        ]);
     }
 
     /**
