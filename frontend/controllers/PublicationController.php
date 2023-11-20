@@ -35,17 +35,6 @@ class PublicationController extends Controller
                     'en'
                 ]
             ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['add', 'all', 'my'],
-                'rules' => [
-                    [
-                        'actions' => ['add', 'all', 'my'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ]
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

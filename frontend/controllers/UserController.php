@@ -33,17 +33,6 @@ class UserController extends Controller
                     'en'
                 ]
             ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['signup', 'login'],
-                'rules' => [
-                    [
-                        'actions' => ['signup', 'login'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ]
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
