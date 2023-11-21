@@ -71,7 +71,7 @@ class PublicationController extends BaseApiController
      */
     public function actionAll()
     {
-        $params = $this->getPublicationsRequestParams(Yii::$app->request);
+        $params = $this->getRequestParams(Yii::$app->request);
         $model = new PublicationList();
 
         if ($model->load($params, "") && $model->getAllPublication())
@@ -97,7 +97,7 @@ class PublicationController extends BaseApiController
      */
     public function actionMy()
     {
-        $params = $this->getPublicationsRequestParams(Yii::$app->request);
+        $params = $this->getRequestParams(Yii::$app->request);
         $model = new PublicationList();
 
         if ($model->load($params, "") && $model->getUserPublications())
