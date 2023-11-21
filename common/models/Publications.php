@@ -11,7 +11,7 @@ class Publications extends BasePublications
             $dataPublications[] = [
                 'postID' => $publication->postID,
                 'tittle' => $publication->tittle,
-                'createdAta' => date('Y-m-d H:i:s', $publication->createdAt)
+                'createdAt' => date('Y-m-d H:i:s', $publication->createdAt)
             ];
         }
 

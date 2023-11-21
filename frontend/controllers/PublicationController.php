@@ -3,17 +3,13 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
 
 use frontend\models\PublicationAdd;
 use frontend\models\PublicationList;
-
-use common\models\BasePublications;
 
 class PublicationController extends Controller
 {
@@ -50,11 +46,6 @@ class PublicationController extends Controller
     {
         $request = Yii::$app->request;
 
-        if (!$request->isPost)
-        {
-            return false;
-        }
-
         $model = new PublicationAdd();
         $params = $request->post();
 
@@ -82,10 +73,6 @@ class PublicationController extends Controller
     public function actionAll()
     {
         $request = Yii::$app->request;
-        if (!$request->isGet)
-        {
-            return false;
-        }
 
         $model = new PublicationList();
         $params = $request->get();
@@ -116,10 +103,6 @@ class PublicationController extends Controller
     public function actionMy()
     {
         $request = Yii::$app->request;
-        if (!$request->isGet)
-        {
-            return false;
-        }
 
         $model = new PublicationList();
         $params = $request->get();
