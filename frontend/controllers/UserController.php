@@ -5,7 +5,6 @@ namespace frontend\controllers;
 use common\models\LoginByEmail;
 use frontend\models\SignupForm;
 use Yii;
-use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -50,11 +49,6 @@ class UserController extends Controller
     {
         $request = Yii::$app->request;
 
-        if (!$request->isPost)
-        {
-            return false;
-        }
-
         $model = new SignupForm();
         $params = $request->post();
 
@@ -84,11 +78,6 @@ class UserController extends Controller
     public function actionLogin()
     {
         $request = Yii::$app->request;
-
-        if (!$request->isPost)
-        {
-            return false;
-        }
 
         $model = new LoginByEmail();
         $params = $request->post();
