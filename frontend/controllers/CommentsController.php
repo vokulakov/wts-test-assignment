@@ -62,4 +62,32 @@ class CommentsController extends BaseApiController
             'errors' => $model->errors
         ];
     }
+
+    /**
+     * Добавление комментария к посту
+     */
+    public function actionAdd()
+    {
+        $request = Yii::$app->request;
+        $params = $request->post();
+
+        $model = new CommentsForm();
+        if ($model->load($params, "") && $model->addCommentToPost())
+        {
+            return [
+                'status' => 'success',
+                'data' => [
+                    'accessToken' => $model->accessToken
+                ],
+                'errors' => $model->errors
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
+    }
+
 }
