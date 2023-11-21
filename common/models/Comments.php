@@ -24,7 +24,7 @@ class Comments extends BaseComments
         $dataComments = [];
         foreach ($query->batch() as $comments)
         {
-            $dataPublications = $comments;
+            $dataComments = $comments;
         }
 
         return $dataComments;
