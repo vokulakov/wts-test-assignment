@@ -5,13 +5,12 @@ namespace frontend\controllers;
 use Yii;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\Response;
 
 use frontend\models\PublicationAdd;
 use frontend\models\PublicationList;
 
-class PublicationController extends Controller
+class PublicationController extends BaseApiController
 {
     public $enableCsrfValidation = false;
 
@@ -72,12 +71,8 @@ class PublicationController extends Controller
      */
     public function actionAll()
     {
-        $request = Yii::$app->request;
-
+        $params = $this->getPublicationsRequestParams(Yii::$app->request);
         $model = new PublicationList();
-        $params = $request->get();
-        $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
-        $params['offset'] = $params['offset'] ?? Yii::$app->params['offsetDefault'];
 
         if ($model->load($params, "") && $model->getAllPublication())
         {
@@ -102,12 +97,8 @@ class PublicationController extends Controller
      */
     public function actionMy()
     {
-        $request = Yii::$app->request;
-
+        $params = $this->getPublicationsRequestParams(Yii::$app->request);
         $model = new PublicationList();
-        $params = $request->get();
-        $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
-        $params['offset'] = $params['offset'] ?? Yii::$app->params['offsetDefault'];
 
         if ($model->load($params, "") && $model->getUserPublications())
         {
