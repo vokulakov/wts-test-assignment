@@ -29,4 +29,29 @@ class Comments extends BaseComments
 
         return $dataComments;
     }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public static function findCommentById($id)
+    {
+        return static::findOne(['commentId' => $id]);
+    }
+
+    public function getAuthor()
+    {
+        return $this->authorId;
+    }
+
+    public function getPost()
+    {
+        return $this->postId;
+    }
+
+    public function validateAuthorId($authorId)
+    {
+        return $this->getAuthor() === $authorId;
+    }
 }

@@ -29,4 +29,24 @@ class Publications extends BasePublications
 
         return $dataPublications;
     }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public static function findPostById($id)
+    {
+        return static::findOne(['postID' => $id]);
+    }
+
+    public function getAuthor()
+    {
+        return $this->authorID;
+    }
+
+    public function validateAuthorId($authorId)
+    {
+        return $this->getAuthor() === $authorId;
+    }
 }

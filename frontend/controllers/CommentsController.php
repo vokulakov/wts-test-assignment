@@ -90,4 +90,31 @@ class CommentsController extends BaseApiController
         ];
     }
 
+    /**
+     * Удаление комментария с поста
+     */
+    public function actionDelete()
+    {
+        $request = Yii::$app->request;
+        $params = $request->post();
+
+        $model = new CommentsForm();
+        if ($model->load($params, "") && $model->deleteCommentFromPost())
+        {
+            return [
+                'status' => 'success',
+                'data' => [
+                    'accessToken' => $model->accessToken,
+                    'commentId' => $model->commentId
+                ],
+                'errors' => $model->errors
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
+    }
 }
