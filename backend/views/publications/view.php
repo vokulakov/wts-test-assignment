@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var common\models\BasePublications $model */
@@ -35,6 +36,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'authorID',
             'createdAt',
         ],
+    ]) ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $comments,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'commentId',
+            'commentContent',
+            [
+                'attribute' => 'createdAt',
+                'format' => ['date', 'php:Y-m-d H:i:s']
+            ],
+            [
+                'attribute' => 'updatedAt',
+                'format' => ['date', 'php:Y-m-d H:i:s']
+            ],
+            'authorId',
+        ]
     ]) ?>
 
 </div>

@@ -7,19 +7,18 @@ use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 
-use frontend\models\PublicationAdd;
-use frontend\models\PublicationList;
+use frontend\models\CommentsForm;
 
-class PublicationController extends BaseApiController
+class CommentsController extends BaseApiController
 {
     public $enableCsrfValidation = false;
 
-    public function behaviors()
+    function behaviors()
     {
         return [
             [
                 'class' => ContentNegotiator::class,
-                'only' => ['add', 'all', 'my'],
+                'only' => ['add', 'delete', 'all'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ],
@@ -31,24 +30,49 @@ class PublicationController extends BaseApiController
                 'class' => VerbFilter::class,
                 'actions' => [
                     'add' => ['post'],
-                    'all' => ['get'],
-                    'my' => ['get']
+                    'delete' => ['post'],
+                    'all' => ['get']
                 ],
             ]
         ];
     }
 
-    /*
-     * Опубликовать пост
+    /**
+     * Получение всех комментариев к посту
+     */
+    public function actionAll()
+    {
+        $params = $this->getRequestParams(Yii::$app->request);
+        $model = new CommentsForm();
+
+        if ($model->load($params, "") && $model->getCommentsFromPostId())
+        {
+            return [
+                'status' => 'success',
+                'data' => [
+                    'comments' => $model->comments
+                ],
+                'errors' => $model->errors
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'data' => null,
+            'errors' => $model->errors
+        ];
+    }
+
+    /**
+     * Добавление комментария к посту
      */
     public function actionAdd()
     {
         $request = Yii::$app->request;
-
-        $model = new PublicationAdd();
         $params = $request->post();
 
-        if ($model->load($params, "") && $model->add())
+        $model = new CommentsForm();
+        if ($model->load($params, "") && $model->addCommentToPost())
         {
             return [
                 'status' => 'success',
@@ -66,47 +90,22 @@ class PublicationController extends BaseApiController
         ];
     }
 
-    /*
-     * Получить все публикации
+    /**
+     * Удаление комментария с поста
      */
-    public function actionAll()
+    public function actionDelete()
     {
-        $params = $this->getRequestParams(Yii::$app->request);
-        $model = new PublicationList();
+        $request = Yii::$app->request;
+        $params = $request->post();
 
-        if ($model->load($params, "") && $model->getAllPublication())
-        {
-            return [
-                'status' => 'success',
-                'data' => [
-                    'publications' => $model->publications
-                ],
-                'errors' => $model->errors
-            ];
-        }
-
-        return [
-            'status' => 'error',
-            'data' => null,
-            'errors' => $model->errors
-        ];
-    }
-
-    /*
-     * Получить список моих публикаций/ публикаций пользователя
-     */
-    public function actionMy()
-    {
-        $params = $this->getRequestParams(Yii::$app->request);
-        $model = new PublicationList();
-
-        if ($model->load($params, "") && $model->getUserPublications())
+        $model = new CommentsForm();
+        if ($model->load($params, "") && $model->deleteCommentFromPost())
         {
             return [
                 'status' => 'success',
                 'data' => [
                     'accessToken' => $model->accessToken,
-                    'publications' => $model->publications
+                    'commentId' => $model->commentId
                 ],
                 'errors' => $model->errors
             ];
@@ -117,7 +116,5 @@ class PublicationController extends BaseApiController
             'data' => null,
             'errors' => $model->errors
         ];
-
     }
-
 }
