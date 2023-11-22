@@ -49,4 +49,9 @@ class Publications extends BasePublications
     {
         return $this->getAuthor() === $authorId;
     }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comments::class, ['postId' => 'postID']);
+    }
 }
