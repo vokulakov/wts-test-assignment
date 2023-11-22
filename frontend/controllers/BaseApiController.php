@@ -7,13 +7,12 @@ use yii\web\Controller;
 
 class BaseApiController extends Controller
 {
-
     /**
-     * Получение параметров запроса публикаций
+     * Получение параметров запроса (для публикаций/комментариев)
      * @param $request
      * @return array
      */
-    public function getPublicationsRequestParams($request): array
+    public function getRequestParams($request): array
     {
         $params = $request->get();
         $params['limit'] = $params['limit'] ?? Yii::$app->params['limitDefault'];
@@ -21,5 +20,4 @@ class BaseApiController extends Controller
 
         return $params;
     }
-
 }

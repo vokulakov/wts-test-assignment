@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Publications;
 use backend\models\PublicationsSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -55,8 +56,13 @@ class PublicationsController extends Controller
      */
     public function actionView($postID)
     {
+        $model = $this->findModel($postID);
+
         return $this->render('view', [
-            'model' => $this->findModel($postID),
+            'model' => $model,
+            'comments' => new ActiveDataProvider([
+                'query' => $model->getComments(),
+            ]),
         ]);
     }
 
