@@ -76,13 +76,7 @@ class PublicationController extends BaseApiController
 
         if ($model->load($params, "") && $model->getAllPublication())
         {
-            return [
-                'status' => 'success',
-                'data' => [
-                    'publications' => $model->publications
-                ],
-                'errors' => $model->errors
-            ];
+            return $model->serializeAllResponse();
         }
 
         return [
@@ -102,14 +96,7 @@ class PublicationController extends BaseApiController
 
         if ($model->load($params, "") && $model->getUserPublications())
         {
-            return [
-                'status' => 'success',
-                'data' => [
-                    'accessToken' => $model->accessToken,
-                    'publications' => $model->publications
-                ],
-                'errors' => $model->errors
-            ];
+            return $model->serializeShortResponse();
         }
 
         return [

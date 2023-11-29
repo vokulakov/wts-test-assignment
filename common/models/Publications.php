@@ -4,30 +4,16 @@ namespace common\models;
 
 class Publications extends BasePublications
 {
-    public static function serializeToArrayShort($query)
+
+    public function serializeToArrayShort()
     {
-        $dataPublications = [];
-        foreach ($query->each() as $publication) {
-            $dataPublications[] = [
-                'postID' => $publication->postID,
-                'tittle' => $publication->tittle,
-                'createdAt' => date('Y-m-d H:i:s', $publication->createdAt)
-            ];
-        }
+        $dataPublication = [
+            'postID' => $this->postID,
+            'tittle' => $this->tittle,
+            'createdAt' => date('Y-m-d H:i:s', $this->createdAt)
+        ];
 
-        return $dataPublications;
-    }
-
-    public static function serializeToArrayFull($query)
-    {
-        $dataPublications = [];
-
-        foreach ($query->batch() as $publications)
-        {
-            $dataPublications = $publications;
-        }
-
-        return $dataPublications;
+        return $dataPublication;
     }
 
     public function getId()
