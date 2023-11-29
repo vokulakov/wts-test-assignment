@@ -47,13 +47,7 @@ class CommentsController extends BaseApiController
 
         if ($model->load($params, "") && $model->getCommentsFromPostId())
         {
-            return [
-                'status' => 'success',
-                'data' => [
-                    'comments' => $model->comments
-                ],
-                'errors' => $model->errors
-            ];
+            return $model->serializeResponse();
         }
 
         return [
