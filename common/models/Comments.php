@@ -4,30 +4,17 @@ namespace common\models;
 
 class Comments extends BaseComments
 {
-    public static function serializeToArrayShort($query)
+    public function serializeToArrayShort()
     {
-        $dataComments = [];
-        foreach ($query->each() as $comment) {
-            $dataComments[] = [
-                'commentId' => $comment->postId,
-                'authorId' => $comment->authorId,
-                'createdAt' => date('Y-m-d H:i:s', $comment->createdAt),
-                'updatedAt' => date('Y-m-d H:i:s', $comment->updatedAt)
-            ];
-        }
+        $dataComment = [
+            'commentId' => $this->commentId,
+            'authorId' => $this->authorId,
+            'commentContent' => $this->commentContent,
+            'createdAt' => date('Y-m-d H:i:s', $this->createdAt),
+            'updatedAt' => date('Y-m-d H:i:s', $this->updatedAt)
+        ];
 
-        return $dataComments;
-    }
-
-    public static function serializeToArrayFull($query)
-    {
-        $dataComments = [];
-        foreach ($query->batch() as $comments)
-        {
-            $dataComments = $comments;
-        }
-
-        return $dataComments;
+        return $dataComment;
     }
 
     public function getId()

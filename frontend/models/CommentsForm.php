@@ -26,8 +26,8 @@ class CommentsForm extends Comments
         return [
             [['postId', 'commentId'], 'integer'],
             //[['postId'], 'required'],
-            [['limit'], 'default', 'value' => 15],
-            [['offset'], 'default', 'value' => 0],
+            [['limit'], 'default', 'value' => Yii::$app->params['limitDefault']],
+            [['offset'], 'default', 'value' => Yii::$app->params['offsetDefault']],
             [['text', 'accessToken'], 'string']
         ];
     }
@@ -50,12 +50,10 @@ class CommentsForm extends Comments
             return false;
         }
 
-        $queryResult = Comments::find()
+        $this->comments = Comments::find()
             ->where(['postId' => $this->postId])
             ->limit($this->limit)
             ->offset($this->offset);
-
-        $this->comments = Comments::serializeToArrayFull($queryResult);
 
         return true;
     }
@@ -148,6 +146,23 @@ class CommentsForm extends Comments
         }
 
         return true;
+    }
+
+    public function serializeResponse()
+    {
+        $result = [];
+
+        foreach ($this->comments->each() as $comment) {
+            $result[] = $comment->serializeToArrayShort();
+        }
+
+        return [
+            'status' => 'success',
+            'data' => [
+                'publications' => $result
+            ],
+            'errors' => $this->errors
+        ];
     }
 
 }

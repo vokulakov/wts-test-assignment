@@ -19,8 +19,8 @@ class PublicationList extends Model
     public function rules()
     {
         return [
-            [['limit'], 'default', 'value' => 15],
-            [['offset'], 'default', 'value' => 0],
+            [['limit'], 'default', 'value' => Yii::$app->params['limitDefault']],
+            [['offset'], 'default', 'value' => Yii::$app->params['offsetDefault']],
             [['accessToken'], 'string']
         ];
     }
@@ -35,11 +35,9 @@ class PublicationList extends Model
             return false;
         }
 
-        $queryResult = Publications::find()
+        $this->publications = Publications::find()
             ->limit($this->limit)
             ->offset($this->offset);
-
-        $this->publications = Publications::serializeToArrayFull($queryResult);
 
         return true;
     }
@@ -61,14 +59,52 @@ class PublicationList extends Model
             return false;
         }
 
-        $queryResult = Publications::find()
+        $this->publications = Publications::find()
             ->where(['authorID' => $user->id])
             ->limit($this->limit)
             ->offset($this->offset);
 
-        $this->publications = Publications::serializeToArrayShort($queryResult);
-
         return true;
+    }
+
+    /**
+     * Сериализация ответа (полный)
+     */
+    public function serializeAllResponse()
+    {
+        $result = [];
+
+        foreach ($this->publications->batch() as $publication) {
+            $result[] = $publication;
+        }
+
+        return [
+            'status' => 'success',
+            'data' => [
+                'publications' => $result
+            ],
+            'errors' => $this->errors
+        ];
+    }
+
+    /**
+     * Сериализация ответа (сокращенный)
+     */
+    public function serializeShortResponse()
+    {
+        $result = [];
+
+        foreach ($this->publications->each() as $publication) {
+            $result[] = $publication->serializeToArrayShort();
+        }
+
+        return [
+            'status' => 'success',
+            'data' => [
+                'publications' => $result
+            ],
+            'errors' => $this->errors
+        ];
     }
 
 }
